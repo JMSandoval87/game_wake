@@ -9,7 +9,7 @@ class SetAlarmPage extends StatefulWidget {
   _SetAlarmPageState createState() => _SetAlarmPageState();
 }
 
-class _SetAlarmPageState extends State<SetAlarmPage> {
+class _SetAlarmPageState extends State<SetAlarmPage> { 
   int _counter = 0;
 
   void _incrementCounter() {
