@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SetAlarmPage extends StatefulWidget {
-  SetAlarmPage({Key? key, required this.title}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  SettingsPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _SetAlarmPageState createState() => _SetAlarmPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SetAlarmPageState extends State<SetAlarmPage> {
+
+class _SettingsPageState extends State<SettingsPage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -26,7 +27,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     return Scaffold(
       //can remove appBar if you need to
       appBar: AppBar(
-        // Here we take the value from the SetAlarmPage object that was created by
+        // Here we take the value from the SettingsPage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
@@ -36,10 +37,10 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Some sample text - SCREEN 2',
+              'Some sample text - SCREEN 3',
             ),
             Text(
-              'more sample text- SCREEN 2',
+              'more sample text- SCREEN 3',
             ),
             Text(
               'You have pushed the button this many times:',
@@ -61,5 +62,3 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     );
   }
 }
-
-
