@@ -64,9 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
 
 
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Expanded(
+              Expanded(
                   flex: 10,
                   child: Row(
                     children: <Widget>[
@@ -97,7 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
-              ),
+
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

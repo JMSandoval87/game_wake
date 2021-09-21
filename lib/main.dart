@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/set_alarm.dart';
 import 'package:flutter_app/settings.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -26,8 +25,6 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -41,10 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _updatecurrenttime() {
     setState(() {
       _hour = now.hour;
-      if (_hour >= 12){
+      if (_hour >= 12) {
         _hour = _hour - 12;
-      }
-      else if (_hour == 0){
+      } else if (_hour == 0) {
         _hour = 12;
       }
       _min = now.minute;
@@ -67,35 +63,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       //can remove appBar if you need to
       appBar: AppBar(
-
-
-
         title: Text(widget.title),
       ),
       body: Container(
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 1,
-
+              flex: 3,
               child: Text(
-
                 'Alarms',
                 style: TextStyle(fontSize: 20),
               ),
             ),
             Expanded(
                 child: Divider(
-                  color: Colors.black,
-                )
-            ),
+              color: Colors.black,
+            )),
             Expanded(
-              flex: 1,
+              flex: 5,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -108,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
-                      onPressed: () { _updatecurrenttime();
+                      onPressed: () {
+                        _updatecurrenttime();
                         // Add your onPressed code here!
                       },
                       label: const Text(''),
@@ -121,18 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Expanded(
                 child: Divider(
-                color: Colors.black,
-                )
-            ),
+              color: Colors.black,
+            )),
             Expanded(
-              flex: 10,
+              flex: 5,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-
                   Align(
                     alignment: Alignment.topCenter,
-
                     child: Text(
                       '$_hour : $_min',
                       style: TextStyle(fontSize: 50),
@@ -141,88 +127,178 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
-                      onPressed: () { _updatecurrenttime();
-              // Add your onPressed code here!
-            },
-              label: const Text(''),
-              icon: const Icon(Icons.access_alarm),
-              backgroundColor: Colors.deepOrange,
-            ),
-
+                      onPressed: () {
+                        _updatecurrenttime();
+                        // Add your onPressed code here!
+                      },
+                      label: const Text(''),
+                      icon: const Icon(Icons.access_alarm),
+                      backgroundColor: Colors.deepOrange,
+                    ),
                   ),
                 ],
               ),
-
             ),
             Expanded(
                 child: Divider(
-                  color: Colors.black,
-                )
-            ),
-
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Expanded(
-                flex: 10,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 25,
-                      child: ButtonTheme(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _incrementCounter();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SettingsPage(title: 'Settings')),
-                            );
-                          },
-                          child: const Text('Settings'),
-                        ),
-                      ),
+              color: Colors.black,
+            )),
+            Expanded(
+              flex: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '$_hour : $_min',
+                      style: TextStyle(fontSize: 50),
                     ),
-                    Expanded(
-                      flex: 15,
-                      child: Text(
-                        ' ',
-                      ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        _updatecurrenttime();
+                        // Add your onPressed code here!
+                      },
+                      label: const Text(''),
+                      icon: const Icon(Icons.access_alarm),
+                      backgroundColor: Colors.deepOrange,
                     ),
-                    Expanded(
-                      flex: 25,
-                      child: ButtonTheme(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SetAlarmPage(title: 'Set Alarm')),
-                            );
-                          },
-                          child: const Text('Set New Alarm'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-
-
+            Expanded(
+                child: Divider(
+              color: Colors.black,
+            )),
+            Expanded(
+              flex: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '$_hour : $_min',
+                      style: TextStyle(fontSize: 50),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        _updatecurrenttime();
+                        // Add your onPressed code here!
+                      },
+                      label: const Text(''),
+                      icon: const Icon(Icons.access_alarm),
+                      backgroundColor: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: Divider(
+              color: Colors.black,
+            )),
+            Expanded(
+              flex: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      '$_hour : $_min',
+                      style: TextStyle(fontSize: 50),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        _updatecurrenttime();
+                        // Add your onPressed code here!
+                      },
+                      label: const Text(''),
+                      icon: const Icon(Icons.access_alarm),
+                      backgroundColor: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                flex: 0,
+                child: Divider(
+                  color: Colors.black,
+                )),
+            Expanded(
+                flex: 5,
+              child: Text(
+                ' ',
+              ),),
+            Expanded(
+              flex: 5,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(
+                    flex: 25,
+                    child: ButtonTheme(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _incrementCounter();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SettingsPage(title: 'Settings')),
+                          );
+                        },
+                        child: const Text('Settings'),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 15,
+                    child: Text(
+                      ' ',
+                    ),
+                  ),
+                  Expanded(
+                    flex: 25,
+                    child: ButtonTheme(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SetAlarmPage(title: 'Set Alarm')),
+                          );
+                        },
+                        child: const Text('Set New Alarm'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-
 
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
-
 
 /* template
 

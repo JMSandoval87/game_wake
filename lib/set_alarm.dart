@@ -87,9 +87,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
               ),
             ),
 
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Expanded(
+            Expanded(
                 flex: 10,
                 child: Row(
                   children: <Widget>[
@@ -135,7 +133,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                   ],
                 ),
               ),
-            ),
+
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
