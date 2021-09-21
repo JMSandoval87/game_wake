@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/main.dart';
+import 'package:flutter_app/set_alarm.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key? key, required this.title}) : super(key: key);
@@ -9,7 +11,6 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-
 class _SettingsPageState extends State<SettingsPage> {
   int _counter = 0;
 
@@ -17,13 +18,16 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _counter++;
 
-      print( "The counter has been increased to " + _counter.toString());
+      print("The counter has been increased to " + _counter.toString());
     });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyHomePage(title: 'Game Awake!')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       //can remove appBar if you need to
       appBar: AppBar(
@@ -31,33 +35,71 @@ class _SettingsPageState extends State<SettingsPage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 10,
+                child: Align(
+                  alignment: Alignment.topLeft,
 
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Some sample text - SCREEN 3',
-            ),
-            Text(
-              'more sample text- SCREEN 3',
-            ),
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            //changing the style of the counter number display
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+                  child: Text(
+                    '\n# of Enemies Needed to stop alarm: 5',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+
+              Expanded(
+                flex: 50,
+                child: Align(
+                  alignment: Alignment.topLeft,
+
+                  child: Text(
+                    'Player Invincibility: y/n',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Expanded(
+                  flex: 10,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 25,
+                        child: ButtonTheme(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _incrementCounter();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyHomePage(title: 'Gameawake!')),
+                              );
+                            },
+                            child: const Text('Back'),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 40,
+                        child: Text(
+                          ' ',
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        //turns the click button into a + symbol
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
