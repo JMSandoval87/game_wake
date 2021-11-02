@@ -1,6 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_app/set_alarm.dart';
 import 'package:flutter_app/settings.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -9,6 +14,7 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
@@ -22,46 +28,66 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  int _hour = 0;
-  int _min = 0;
+  int _row = 5;
+  int _col = 2;
+  var dateTimeList = List.generate(5, (i) => List.filled(2, "NO_ALARM_SET", growable: false), growable: false);
   DateTime now = DateTime.now();
+  String _note = "";
+  String _dateString ="";
+  String _timeString = "";
+  String _dateTimeString = "";
+  var _date;
+  var _time;
+  int testcase = 0;
 
-  void _updatecurrenttime() {
-    setState(() {
-      _hour = now.hour;
-      if (_hour >= 12) {
-        _hour = _hour - 12;
-      } else if (_hour == 0) {
-        _hour = 12;
+  void setDateTimeArray() async {
+    String dateTimeString = "";
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+    var parts = fileContent.split(' ');
+    int partcount = 0;
+    for (var i = 0; i < _row; i++) {
+      for (var j = 0; j < _col; j++) {
+        dateTimeList[i][j] = parts[partcount];
+        partcount++;
       }
-      _min = now.minute;
-    });
+    }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print("The counter has been increased to " + _counter.toString());
+  String getTimeSting(int alarmNum){
+    String timestr = "";
+    setDateTimeArray();
+    timestr = dateTimeList[alarmNum][0] + "\n"+ dateTimeList[alarmNum][1];
+    return timestr;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SetAlarmPage(title: 'My page no. 2')),
-      );
-    });
   }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
+    return filePath;
+  }
+
+
+  void readFile() async {
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       //can remove appBar if you need to
       appBar: AppBar(
@@ -85,50 +111,25 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               flex: 5,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'alarm times and toggles will display here',
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: FloatingActionButton.extended(
-                      onPressed: () {
-                        _updatecurrenttime();
-                        // Add your onPressed code here!
-                      },
-                      label: const Text(''),
-                      icon: const Icon(Icons.access_alarm),
-                      backgroundColor: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-                child: Divider(
-              color: Colors.black,
-            )),
-            Expanded(
-              flex: 5,
-              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      '$_hour : $_min',
-                      style: TextStyle(fontSize: 50),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        _dateTimeString = getTimeSting(0),
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                  ),
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
                       onPressed: () {
-                        _updatecurrenttime();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SetAlarmPage(title: 'Set Alarm', slot: 0,)),
+                        );
                         // Add your onPressed code here!
                       },
                       label: const Text(''),
@@ -151,15 +152,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Text(
-                      '$_hour : $_min',
-                      style: TextStyle(fontSize: 50),
+                      _dateTimeString = getTimeSting(1),
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
                       onPressed: () {
-                        _updatecurrenttime();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SetAlarmPage(title: 'Set Alarm', slot: 1,)),
+                        );
                         // Add your onPressed code here!
                       },
                       label: const Text(''),
@@ -182,15 +188,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Text(
-                      '$_hour : $_min',
-                      style: TextStyle(fontSize: 50),
+                      _dateTimeString = getTimeSting(2),
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
                       onPressed: () {
-                        _updatecurrenttime();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SetAlarmPage(title: 'Set Alarm', slot: 2,)),
+                        );
+                        setDateTimeArray();
                         // Add your onPressed code here!
                       },
                       label: const Text(''),
@@ -213,15 +225,57 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Text(
-                      '$_hour : $_min',
-                      style: TextStyle(fontSize: 50),
+                      _dateTimeString = getTimeSting(3),
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
                   Align(
                     alignment: Alignment.topRight,
                     child: FloatingActionButton.extended(
                       onPressed: () {
-                        _updatecurrenttime();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SetAlarmPage(title: 'Set Alarm', slot: 3,)),
+                        );
+                        setDateTimeArray();
+                        // Add your onPressed code here!
+                      },
+                      label: const Text(''),
+                      icon: const Icon(Icons.access_alarm),
+                      backgroundColor: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: Divider(
+              color: Colors.black,
+            )),
+            Expanded(
+              flex: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      _dateTimeString = getTimeSting(4),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SetAlarmPage(title: 'Set Alarm', slot: 4,)),
+                        );
                         // Add your onPressed code here!
                       },
                       label: const Text(''),
@@ -254,8 +308,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ButtonTheme(
                       child: ElevatedButton(
                         onPressed: () {
-                          _incrementCounter();
                           Navigator.push(
+
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
@@ -272,97 +326,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       ' ',
                     ),
                   ),
-                  Expanded(
-                    flex: 25,
-                    child: ButtonTheme(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SetAlarmPage(title: 'Set Alarm')),
-                          );
-                        },
-                        child: const Text('Set New Alarm'),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
-
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
-/* template
-
-class SetAlarmPage extends StatefulWidget {
-  SetAlarmPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _SetAlarmPageState createState() => _SetAlarmPageState();
-}
-
-
-class _SetAlarmPageState extends State<SetAlarmPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-
-      print( "The counter has been increased to " + _counter.toString());
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      //can remove appBar if you need to
-      appBar: AppBar(
-        // Here we take the value from the SetAlarmPage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Some sample text - SCREEN 2',
-            ),
-            Text(
-              'more sample text- SCREEN 2',
-            ),
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            //changing the style of the counter number display
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        //turns the click button into a + symbol
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
- */
