@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyHomePage(title: 'Game Awake!')),
+      MaterialPageRoute(builder: (context) => SetAlarmPage(title: 'Set Alarm', slot: 2,)),
     );
   }
 
@@ -78,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        MyHomePage(title: 'Gameawake!')),
+                                        SetAlarmPage(title: 'Set Alarm', slot: 2,)),
                               );
                             },
                             child: const Text('Back'),
