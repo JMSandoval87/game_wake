@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
+import 'alarmspage.dart';
+
 
 class SetAlarmPage extends StatefulWidget {
   final int slot;
@@ -27,6 +29,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   String _note = "";
   String _dateString ="";
   String _timeString = "";
+  String _strSend = "";
   var _date;
   var _time;
   int _row = 5;
@@ -42,10 +45,39 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   }
 
 
+  void initializeFile() async {
+    File file = File(await getFilePath());
+    print("file initialized");
+    for (var i = 0; i < _row; i++) {
+      for (var j = 0; j < _col-1; j++) {
+        file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
+        file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
+      }
+    }
+    readFile();
+  }
+
+  void checkInit() async {
+    File file = File(await getFilePath());
+    if ((await File("path/to/file").exists()) == false){
+      print("FILE NOT FOUND");
+      initializeFile();
+    }
+  }
+
+
   void readFile() async {
     File file = File(await getFilePath());
     String fileContent = await file.readAsString();
     print('File Content:' + fileContent);
+  }
+
+
+  void getFileString() async {
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+    _strSend = fileContent;
+    print(_strSend);
   }
 
 
@@ -64,14 +96,26 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   }
 
 
+
+
   void saveFile() async {
+    var now = new DateTime.now();
     var tList = List.generate(_row, (i) => List.filled(_col, "NO_ALARM_SET", growable: false), growable: false);
     File file = File(await getFilePath());
+
+    print("FILE.EXISTS");
+    print(await File("path/to/file").exists());
+    if ((await File("path/to/file").exists()) == false){
+      print("FILE NOT FOUND");
+      initializeFile();
+    }
+
     String fileContent = await file.readAsString();
     file.writeAsString(""); // 2
-    print(getFilePath());
 
     var parts = fileContent.split(' ');
+
+    print(parts);
     int partcount = 0;
 
     for (var i = 0; i < _row; i++) {
@@ -86,8 +130,21 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     print(tList);
     for (var i = 0; i < _row; i++) {
       for (var j = 0; j < _col-1; j++) {
-
         if (i == widget.slot){
+          if (_timeString == ""){
+            var formatter = new DateFormat('HH:mm');
+            String formattedDate = formatter.format(now);
+            print(formattedDate);
+            _timeString = formattedDate;
+          }
+
+          if (_dateString == ""){
+            var formatter = new DateFormat('yyyy-MM-dd');
+            String formattedDate = formatter.format(now);
+            print(formattedDate); // 2016-01-25
+
+            _dateString = formattedDate;
+          }
           tList[i][j] = _timeString;
           tList[i][j+1] = _dateString;
           fileSave..writeAsStringSync(_timeString, mode: FileMode.append);
@@ -110,6 +167,8 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       //can remove appBar if you need to
       appBar: AppBar(
@@ -144,10 +203,10 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     type: DateTimePickerType.time,
                     // use24HourFormat: false,
                     locale: Locale('en', 'US'),
-                    initialValue: '',
+                    initialValue: DateFormat.Hm().format(DateTime.now()).toString(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
-                    initialTime: TimeOfDay(hour: 5, minute: 00),
+                    initialTime: TimeOfDay.now(),
                     dateMask: 'hh:mm a',
 
                     icon: Icon(Icons.access_alarms),
@@ -172,7 +231,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
               ),
             ),
 
-
             Expanded(
               flex: 10,
               child: Align(
@@ -180,7 +238,9 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                   child:
                   DateTimePicker(
                     type: DateTimePickerType.date,
-                    initialValue: '',
+                    initialValue: DateFormat.MMMMd()
+                        .format(DateTime.now())
+                        .toString(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
                     icon: Icon(Icons.event),
@@ -225,11 +285,13 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     child: ButtonTheme(
                       child: ElevatedButton(
                         onPressed: () {
+                          getFileString();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    MyHomePage(title: 'GameAwake!')),
+
+                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
                           );
                         },
                         child: const Text('cancel'),
@@ -246,19 +308,15 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     flex: 25,
                     child: ButtonTheme(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // print("Reading File Before Save");
-                          // readFile();
+                        onPressed: ()  {
                           print("saving file:");
+                          getFileString();
                           saveFile();
-                          // print("Reading File After Save");
-                          // readFile();
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    MyHomePage(title: 'GameAwake!')),
+                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
                           );
                         },
                         child: const Text('Set Alarm'),

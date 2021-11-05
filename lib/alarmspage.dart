@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_app/main.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_app/set_alarm.dart';
@@ -9,16 +10,18 @@ import 'dart:io';
 
 
 
-
 class AlarmsPage extends StatefulWidget {
-  AlarmsPage({Key? key, required this.title}) : super(key: key);
+  AlarmsPage({Key? key, required this.title, required this.dtstr}) : super(key: key);
   final String title;
-
+  final String dtstr;
   @override
   _AlarmsPageState createState() => _AlarmsPageState();
 }
 
+
+
 class _AlarmsPageState extends State<AlarmsPage> {
+  int loadcount = 0;
   int _row = 5;
   int _col = 2;
   var dateTimeList = List.generate(5, (i) => List.filled(2, "NO_ALARM_SET", growable: false), growable: false);
@@ -30,39 +33,41 @@ class _AlarmsPageState extends State<AlarmsPage> {
   var _date;
   var _time;
   int testcase = 0;
-  int refreshcount = 0;
 
   void setDateTimeArray() async {
-    // print("setting time");
     String dateTimeString = "";
-    File file = File(await getFilePath());
-    String fileContent = await file.readAsString();
-    var parts = fileContent.split(' ');
     int partcount = 0;
-    for (var i = 0; i < _row; i++) {
-      for (var j = 0; j < _col; j++) {
-        dateTimeList[i][j] = parts[partcount];
-        partcount++;
+
+    if (widget.dtstr == '') {
+        File file = File(await getFilePath());
+        String fileContent = await file.readAsString();
+        var parts = fileContent.split(' ');
+
+        for (var i = 0; i < _row; i++) {
+          for (var j = 0; j < _col; j++) {
+            dateTimeList[i][j] = parts[partcount];
+            partcount++;
+          }
+        }
+    }
+    else{
+      var parts = widget.dtstr.split(' ');
+      for (var i = 0; i < _row; i++) {
+        for (var j = 0; j < _col; j++) {
+          dateTimeList[i][j] = parts[partcount];
+          partcount++;
+        }
       }
     }
   }
-
-  void updateStr() async {
-    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
-    String appDocumentsPath = appDocumentsDirectory.path; // 2
-    String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
-    _dateTimeString = filePath;
-  }
-
-  String getStr(){
-    return _dateTimeString;
-  }
-
 
   String getTimeSting(int alarmNum){
     String timestr = "";
     setDateTimeArray();
     timestr = dateTimeList[alarmNum][0] + "\n"+ dateTimeList[alarmNum][1];
+    if(timestr == ("NO_ALARM_SET"+ "\n"+"NO_ALARM_SET")){
+      timestr = "No Alarm Set";
+    }
     return timestr;
   }
 
@@ -73,16 +78,26 @@ class _AlarmsPageState extends State<AlarmsPage> {
     return filePath;
   }
 
-
   void readFile() async {
     File file = File(await getFilePath());
     String fileContent = await file.readAsString();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 0),() {
+      setDateTimeArray();
+      setState(() {});
+    });
+
+    //   @override
+    // void initState() {
+    //   super.initState();
+    //   if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+    //     SchedulerBinding.instance!.addPostFrameCallback((_) => setDateTimeArray());
+    //   }
+    // }
+    // setDateTimeArray();
 
     return Scaffold(
       //can remove appBar if you need to
@@ -90,19 +105,16 @@ class _AlarmsPageState extends State<AlarmsPage> {
         title: Text(widget.title),
       ),
       body: Container(
-        child: Column(mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
               flex: 3,
-
               child: Text(
                 'Alarms',
                 style: TextStyle(fontSize: 20),
               ),
             ),
-
-
-
             Expanded(
                 child: Divider(
                   color: Colors.black,
@@ -117,6 +129,7 @@ class _AlarmsPageState extends State<AlarmsPage> {
                     child: Text(
                       _dateTimeString = getTimeSting(0),
                       style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Align(
@@ -153,6 +166,7 @@ class _AlarmsPageState extends State<AlarmsPage> {
                     child: Text(
                       _dateTimeString = getTimeSting(1),
                       style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Align(
@@ -189,6 +203,7 @@ class _AlarmsPageState extends State<AlarmsPage> {
                     child: Text(
                       _dateTimeString = getTimeSting(2),
                       style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Align(
@@ -226,6 +241,7 @@ class _AlarmsPageState extends State<AlarmsPage> {
                     child: Text(
                       _dateTimeString = getTimeSting(3),
                       style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Align(
@@ -263,6 +279,7 @@ class _AlarmsPageState extends State<AlarmsPage> {
                     child: Text(
                       _dateTimeString = getTimeSting(4),
                       style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Align(
@@ -308,7 +325,6 @@ class _AlarmsPageState extends State<AlarmsPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
