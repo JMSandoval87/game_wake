@@ -4,6 +4,7 @@ import 'package:flutter_app/main.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_app/set_alarm.dart';
 import 'package:flutter_app/settings.dart';
+import 'package:flutter_app/testalarm.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -333,12 +334,32 @@ class _AlarmsPageState extends State<AlarmsPage> {
                       ),
                     ),
                   ),
+
+
                   Expanded(
-                    flex: 15,
-                    child: Text(
-                      ' ',
+                    flex: 25,
+                    child: ButtonTheme(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    testAlarmPage(title: 'Test Alarm')),
+                          );
+                        },
+                        child: const Text('test'),
+                      ),
                     ),
                   ),
+
+
+                  // Expanded(
+                  //   flex: 15,
+                  //   child: Text(' ',),
+                  // ),
+
+
                 ],
               ),
             ),

@@ -1,10 +1,20 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/alarmspage.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 
-void main() {
+void printHello() {
+  final DateTime now = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+}
+
+
+main() async {
   runApp(MyApp());
+  await AndroidAlarmManager.initialize();
 }
 
 class MyApp extends StatelessWidget {
