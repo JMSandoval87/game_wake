@@ -23,8 +23,8 @@ class AlarmsPage extends StatefulWidget {
 class _AlarmsPageState extends State<AlarmsPage> {
   int loadcount = 0;
   int _row = 5;
-  int _col = 2;
-  var dateTimeList = List.generate(5, (i) => List.filled(2, "NO_ALARM_SET", growable: false), growable: false);
+  int _col = 3;
+  var dateTimeList = List.generate(5, (i) => List.filled(3, "NO_ALARM_SET", growable: false), growable: false);
   DateTime now = DateTime.now();
   String _note = "";
   String _dateString ="";
@@ -37,12 +37,10 @@ class _AlarmsPageState extends State<AlarmsPage> {
   void setDateTimeArray() async {
     String dateTimeString = "";
     int partcount = 0;
-
     if (widget.dtstr == '') {
         File file = File(await getFilePath());
         String fileContent = await file.readAsString();
         var parts = fileContent.split(' ');
-
         for (var i = 0; i < _row; i++) {
           for (var j = 0; j < _col; j++) {
             dateTimeList[i][j] = parts[partcount];

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -22,18 +24,19 @@ class SetAlarmPage extends StatefulWidget {
 }
 
 class _SetAlarmPageState extends State<SetAlarmPage> {
-  List<List<String>> dateTimeList = List.generate(5, (i) => List.filled(2, "NO_ALARM_SET", growable: false), growable: false);
+  List<List<String>> dateTimeList = List.generate(5, (i) => List.filled(3, "NO_ALARM_SET", growable: false), growable: false);
   int get slot => this.slot;
   int _counter = 0;
   final _formKey = GlobalKey<FormState>();
   String _note = "";
   String _dateString ="";
   String _timeString = "";
+  String _alarmID = "";
   String _strSend = "";
   var _date;
   var _time;
   int _row = 5;
-  int _col = 2;
+  int _col = 3;
 
 
   Future<String> getFilePath() async {
@@ -49,10 +52,9 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     File file = File(await getFilePath());
     print("file initialized");
     for (var i = 0; i < _row; i++) {
-      for (var j = 0; j < _col-1; j++) {
         file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
         file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
-      }
+        file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
     }
     readFile();
   }
@@ -117,7 +119,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
 
     print(parts);
     int partcount = 0;
-
     for (var i = 0; i < _row; i++) {
       for (var j = 0; j < _col; j++) {
         tList[i][j] = parts[partcount];
@@ -129,7 +130,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     File fileSave = File(await getFilePath());
     print(tList);
     for (var i = 0; i < _row; i++) {
-      for (var j = 0; j < _col-1; j++) {
         if (i == widget.slot){
           if (_timeString == ""){
             var formatter = new DateFormat('HH:mm');
@@ -145,23 +145,32 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
 
             _dateString = formattedDate;
           }
-          tList[i][j] = _timeString;
-          tList[i][j+1] = _dateString;
+
+          if (_alarmID == ""){
+            _alarmID = Random().nextInt(1000).toString();
+          }
+
+          tList[i][0] = _timeString;
+          tList[i][1] = _dateString;
+          tList[i][2] = _alarmID;
           fileSave..writeAsStringSync(_timeString, mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
           fileSave..writeAsStringSync(_dateString, mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
+          fileSave..writeAsStringSync(_alarmID, mode: FileMode.append);
+          fileSave..writeAsStringSync(" ", mode: FileMode.append);
         }
         else{
-          fileSave..writeAsStringSync(tList[i][j], mode: FileMode.append);
+          fileSave..writeAsStringSync(tList[i][0], mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
-          fileSave..writeAsStringSync(tList[i][j+1], mode: FileMode.append);
+          fileSave..writeAsStringSync(tList[i][1], mode: FileMode.append);
+          fileSave..writeAsStringSync(" ", mode: FileMode.append);
+          fileSave..writeAsStringSync(tList[i][2], mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
         }
-
-        print(tList[i][j]);
-        print(tList[i][j+1]);
-      }
+        print(tList[i][0]);
+        print(tList[i][1]);
+        print(tList[i][2]);
     }
   }
 

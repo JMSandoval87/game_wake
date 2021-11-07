@@ -1,6 +1,9 @@
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/set_alarm.dart';
+import 'alarmspage.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key? key, required this.title}) : super(key: key);
@@ -13,6 +16,21 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   int _counter = 0;
+  String _strSend = "";
+
+  void setFileString() async {
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+    _strSend = fileContent;
+    print(_strSend);
+  }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
+    return filePath;
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -22,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
     });
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SetAlarmPage(title: 'Set Alarm', slot: 2,)),
+      MaterialPageRoute(builder: (context) => SettingsPage(title: 'Settings')),
     );
   }
 
@@ -73,12 +91,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: ButtonTheme(
                       child: ElevatedButton(
                         onPressed: () {
-                          _incrementCounter();
+                          // _incrementCounter();
+                          setFileString();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    SetAlarmPage(title: 'Set Alarm', slot: 2,)),
+                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
                           );
                         },
                         child: const Text('Back'),

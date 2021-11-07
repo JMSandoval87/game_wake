@@ -1,12 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_app/alarmspage.dart';
-import 'package:flutter_app/set_alarm.dart';
-import 'package:flutter_app/settings.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -36,12 +31,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _strSend = "";
+
+  void getFileString() async {
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+    _strSend = fileContent;
+    print(_strSend);
+  }
+
+  String getsplashtext(){
+    String splashtext = "Splash!";
+    getFileString();
+    // saveFile();
+    return splashtext;
+  }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
+    return filePath;
+  }
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 5),() {
+
       print("reloading");
+      print(_strSend);
       Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            AlarmsPage(title: 'Game Awake!', dtstr: "")),
+            AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
       );
     });
 
@@ -51,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Text('Splash Screen'),
+        child: Text(getsplashtext()),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
