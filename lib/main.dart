@@ -5,6 +5,8 @@ import 'package:flutter_app/alarmspage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 
+import 'game.dart';
+
 void printHello() {
   final DateTime now = DateTime.now();
   final int isolateId = Isolate.current.hashCode;
@@ -27,8 +29,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
+      home: MyHomePage(title: 'Splash!',),
       // home: AlarmsPage(title: 'Game Awake!', dtstr: '',),
-      home: MyHomePage(title: 'Splash',),
+      // home: MG(),//MyHomePage(title: 'Splash',),
     );
   }
 }

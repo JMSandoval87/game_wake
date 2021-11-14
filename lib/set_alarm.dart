@@ -31,7 +31,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   String _note = "";
   String _dateString ="";
   String _timeString = "";
-  String _alarmID = "";
+  String _alarmStatus = "";
   String _strSend = "";
   var _date;
   var _time;
@@ -146,18 +146,18 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
             _dateString = formattedDate;
           }
 
-          if (_alarmID == ""){
-            _alarmID = Random().nextInt(1000).toString();
+          if (_alarmStatus == ""){
+            _alarmStatus = "1";
           }
 
           tList[i][0] = _timeString;
           tList[i][1] = _dateString;
-          tList[i][2] = _alarmID;
+          tList[i][2] = _alarmStatus;
           fileSave..writeAsStringSync(_timeString, mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
           fileSave..writeAsStringSync(_dateString, mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
-          fileSave..writeAsStringSync(_alarmID, mode: FileMode.append);
+          fileSave..writeAsStringSync(_alarmStatus, mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
         }
         else{

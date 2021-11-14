@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
+import 'game.dart';
+
 
 
 class AlarmsPage extends StatefulWidget {
@@ -84,9 +86,34 @@ class _AlarmsPageState extends State<AlarmsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 0),() {
+    Future.delayed(Duration(seconds: 1),() {
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
       setDateTimeArray();
       setState(() {});
+
+      for (var i = 0; i < _row; i++) {
+        if((dateTimeList[i][1] + " "+ dateTimeList[i][0]) == formattedDate
+            && dateTimeList[i][2] == "1"){
+          dateTimeList[i][2] = "-1";
+          print("Alarm for "+formattedDate+" was activated");
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage(title: 'Settings')),
+          );
+      }
+
+      // if((dateTimeList[0][1] + " "+ dateTimeList[0][0]) == formattedDate
+      //     && dateTimeList[0][2] == "1"){
+      //   print("Alarm for "+formattedDate+" was activated");
+      //   Navigator.pop(context);
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => SettingsPage(title: 'Settings')),
+      //   );
+      }
+
     });
 
     //   @override
@@ -345,7 +372,8 @@ class _AlarmsPageState extends State<AlarmsPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    testAlarmPage(title: 'Test Alarm')),
+                                    // testAlarmPage(title: 'Test Alarm')),
+                                MG()),
                           );
                         },
                         child: const Text('test'),
