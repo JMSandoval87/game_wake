@@ -1,16 +1,34 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sensors/sensors.dart';
+import 'package:flutter_app/set_alarm.dart';
 
 import 'alarmspage.dart';
 
 
 class MG extends StatefulWidget {
+  final String lastalarm;
+  final String title;
+
+  MG({Key? key, required this.title, required this.lastalarm}) : super(key: key);
+
   MGState createState() => MGState();
 }
 
 class MGState extends State<MG> with TickerProviderStateMixin {
+  int _row = 5;
+  int _col = 3;
+  String _timeString = "";
+  String _dateString = "";
+  String _alarmStatus = "";
+  String _strSend = "";
+
+
   late Animation<double> bA, tA;
   late AnimationController bC, tC;
   double bYP = 0, tYP = 0, bXP = 0, tXP = 0;
@@ -21,9 +39,9 @@ class MGState extends State<MG> with TickerProviderStateMixin {
   var r = Random();
   static const Color w = Colors.white;
   Widget d = Container(height: 30, width: 30, color: Colors.deepOrange,);
+
   void it() {
-    bC =
-        AnimationController(duration: Duration(milliseconds: 800), vsync: this);
+    bC = AnimationController(duration: Duration(milliseconds: 800), vsync: this);
     accelerometerEvents.listen((AccelerometerEvent e) {
 
 
@@ -76,9 +94,10 @@ class MGState extends State<MG> with TickerProviderStateMixin {
     tC.forward();
   }
 
+
+
+
   @override
-
-
   Widget build(BuildContext ctx) {
     if (bXP > tXP - 0.15 && bXP < tXP + 0.15) {
       if (bYP < tYP) {
@@ -124,18 +143,19 @@ class MGState extends State<MG> with TickerProviderStateMixin {
               ElevatedButton(
                 onPressed: () {
                   if(c > scoreToBeat){
+                    FlutterRingtonePlayer.stop();
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-
-                              AlarmsPage(title: 'Game Awake!', dtstr: "")),
+                              AlarmsPage(title: 'Game Awake!', dtstr: _strSend, lastalarm: widget.lastalarm)),
                     );
                   }
-
-
+                  else{
+                    FlutterRingtonePlayer.playAlarm();
+                  }
                   // if(eG == 2){
-
                   // }
                     it();
                   eG = 1;
