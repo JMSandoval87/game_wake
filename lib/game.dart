@@ -44,7 +44,7 @@ class runGState extends State<runG> with TickerProviderStateMixin {
         else if (event.x > 5)
           stream.addValue(-1);
         else {
-          x = double.parse(event.x.toStringAsFixed(1)) / 5;
+          x = -double.parse(event.x.toStringAsFixed(1)) / 5;
           stream.addValue(x);
         }
       }
