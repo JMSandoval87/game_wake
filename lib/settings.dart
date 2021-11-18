@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
+                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend, lastalarm: "")),
                           );
                         },
                         child: const Text('Back'),

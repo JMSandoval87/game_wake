@@ -43,14 +43,12 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
     String appDocumentsPath = appDocumentsDirectory.path; // 2
     String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
-    print(filePath);
     return filePath;
   }
 
 
   void initializeFile() async {
     File file = File(await getFilePath());
-    print("file initialized");
     for (var i = 0; i < _row; i++) {
         file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
         file..writeAsStringSync("NO_ALARM_SET ", mode: FileMode.append);
@@ -62,7 +60,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   void checkInit() async {
     File file = File(await getFilePath());
     if ((await File("path/to/file").exists()) == false){
-      print("FILE NOT FOUND");
       initializeFile();
     }
   }
@@ -71,7 +68,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
   void readFile() async {
     File file = File(await getFilePath());
     String fileContent = await file.readAsString();
-    print('File Content:' + fileContent);
   }
 
 
@@ -79,7 +75,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     File file = File(await getFilePath());
     String fileContent = await file.readAsString();
     _strSend = fileContent;
-    print(_strSend);
   }
 
 
@@ -104,11 +99,7 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
     var now = new DateTime.now();
     var tList = List.generate(_row, (i) => List.filled(_col, "NO_ALARM_SET", growable: false), growable: false);
     File file = File(await getFilePath());
-
-    print("FILE.EXISTS");
-    print(await File("path/to/file").exists());
     if ((await File("path/to/file").exists()) == false){
-      print("FILE NOT FOUND");
       initializeFile();
     }
 
@@ -117,7 +108,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
 
     var parts = fileContent.split(' ');
 
-    print(parts);
     int partcount = 0;
     for (var i = 0; i < _row; i++) {
       for (var j = 0; j < _col; j++) {
@@ -126,22 +116,18 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
       }
     }
 
-    print("contents of array being saved");
     File fileSave = File(await getFilePath());
-    print(tList);
     for (var i = 0; i < _row; i++) {
         if (i == widget.slot){
           if (_timeString == ""){
             var formatter = new DateFormat('HH:mm');
             String formattedDate = formatter.format(now);
-            print(formattedDate);
             _timeString = formattedDate;
           }
 
           if (_dateString == ""){
             var formatter = new DateFormat('yyyy-MM-dd');
             String formattedDate = formatter.format(now);
-            print(formattedDate); // 2016-01-25
 
             _dateString = formattedDate;
           }
@@ -168,9 +154,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
           fileSave..writeAsStringSync(tList[i][2], mode: FileMode.append);
           fileSave..writeAsStringSync(" ", mode: FileMode.append);
         }
-        print(tList[i][0]);
-        print(tList[i][1]);
-        print(tList[i][2]);
     }
   }
 
@@ -221,20 +204,13 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     icon: Icon(Icons.access_alarms),
                     timeLabelText: 'Time',
                     onChanged: (val) {
-                      // print("time period: "+_tTime.period);
-                      print("print from here:");
                       _timeString = val;
-                      print(_timeString);
-                      print("slot:");
-                      print(widget.slot);
                     },
 
                     validator: (val) {
-                      print(val);
                       return null;
                     },
                     onSaved: (val) {
-                      print(val);
                     },
                   )
               ),
@@ -255,23 +231,15 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     icon: Icon(Icons.event),
                     dateLabelText: 'Date',
                     onChanged: (val) {
-                      // print("time period: "+_tTime.period);
-                      print("print from here:");
                       _dateString = val;
-                      print(_dateString);
                     },
-
                     validator: (val) {
-                      print(val);
                       return null;
                     },
                     onSaved: (val) => print(val),
                   )
-
               ),
             ),
-
-
             Expanded(
               flex: 40,
               child: Align(
@@ -283,8 +251,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                 ),
               ),
             ),
-
-
             Expanded(
               flex: 10,
               child: Row(
@@ -295,12 +261,12 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           getFileString();
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-
-                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
+                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend, lastalarm: "",)),
                           );
                         },
                         child: const Text('cancel'),
@@ -318,14 +284,14 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                     child: ButtonTheme(
                       child: ElevatedButton(
                         onPressed: ()  {
-                          print("saving file:");
                           getFileString();
                           saveFile();
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
+                                    AlarmsPage(title: 'Game Wake!', dtstr: _strSend, lastalarm: "")),
                           );
                         },
                         child: const Text('Set Alarm'),
@@ -335,7 +301,6 @@ class _SetAlarmPageState extends State<SetAlarmPage> {
                 ],
               ),
             ),
-
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

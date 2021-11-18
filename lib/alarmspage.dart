@@ -10,13 +10,15 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'game.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 
 
 class AlarmsPage extends StatefulWidget {
-  AlarmsPage({Key? key, required this.title, required this.dtstr}) : super(key: key);
+  AlarmsPage({Key? key, required this.title, required this.dtstr, required this.lastalarm}) : super(key: key);
   final String title;
   final String dtstr;
+  final String lastalarm;
   @override
   _AlarmsPageState createState() => _AlarmsPageState();
 }
@@ -94,37 +96,18 @@ class _AlarmsPageState extends State<AlarmsPage> {
 
       for (var i = 0; i < _row; i++) {
         if((dateTimeList[i][1] + " "+ dateTimeList[i][0]) == formattedDate
-            && dateTimeList[i][2] == "1"){
+            && dateTimeList[i][2] == "1" && widget.lastalarm != formattedDate){
           dateTimeList[i][2] = "-1";
           print("Alarm for "+formattedDate+" was activated");
+          FlutterRingtonePlayer.playAlarm();
           Navigator.pop(context);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SettingsPage(title: 'Settings')),
+            MaterialPageRoute(builder: (context) => runG(title: 'GAME WAKE!', lastalarm: formattedDate)),
           );
+        }
       }
-
-      // if((dateTimeList[0][1] + " "+ dateTimeList[0][0]) == formattedDate
-      //     && dateTimeList[0][2] == "1"){
-      //   print("Alarm for "+formattedDate+" was activated");
-      //   Navigator.pop(context);
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => SettingsPage(title: 'Settings')),
-      //   );
-      }
-
     });
-
-    //   @override
-    // void initState() {
-    //   super.initState();
-    //   if (SchedulerBinding.instance!.schedulerPhase == SchedulerPhase.persistentCallbacks) {
-    //     SchedulerBinding.instance!.addPostFrameCallback((_) => setDateTimeArray());
-    //   }
-    // }
-    // setDateTimeArray();
-
     return Scaffold(
       //can remove appBar if you need to
       appBar: AppBar(
@@ -347,47 +330,33 @@ class _AlarmsPageState extends State<AlarmsPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 25,
-                    child: ButtonTheme(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SettingsPage(title: 'Settings')),
-                          );
-                        },
-                        child: const Text('Settings'),
-                      ),
-                    ),
+                    child: Text(""),
+                    // ButtonTheme(
+                    //   child: ElevatedButton(
+                    //     onPressed: () {
+                    //       FlutterRingtonePlayer.stop();
+                    //     },
+                    //     child: const Text('test1'),
+                    //   ),
+                    // ),
                   ),
-
-
                   Expanded(
                     flex: 25,
-                    child: ButtonTheme(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    // testAlarmPage(title: 'Test Alarm')),
-                                MG()),
-                          );
-                        },
-                        child: const Text('test'),
-                      ),
-                    ),
+                    child: Text(""),
+                    // ButtonTheme(
+                    //   child: ElevatedButton(
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) =>
+                    //             runGame(title: 'Game', lastalarm: "fdsa",),)
+                    //       );
+                    //     },
+                    //     child: const Text('test2'),
+                    //   ),
+                    // ),
                   ),
-
-
-                  // Expanded(
-                  //   flex: 15,
-                  //   child: Text(' ',),
-                  // ),
-
-
                 ],
               ),
             ),

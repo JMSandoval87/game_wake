@@ -1,22 +1,12 @@
 import 'dart:io';
-import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/alarmspage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
-
 import 'game.dart';
-
-void printHello() {
-  final DateTime now = DateTime.now();
-  final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
-}
-
 
 main() async {
   runApp(MyApp());
-  await AndroidAlarmManager.initialize();
 }
 
 class MyApp extends StatelessWidget {
@@ -25,13 +15,14 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Game Wake!',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      home: MyHomePage(title: 'Splash!',),
+      home: MyHomePage(title: 'GAME WAKE!',),
       // home: AlarmsPage(title: 'Game Awake!', dtstr: '',),
-      // home: MG(),//MyHomePage(title: 'Splash',),
+      // home: runG(title: 'Game', lastalarm: "fdsa"),//MyHomePage(title: 'Splash',),
     );
   }
 }
@@ -53,8 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
     print(_strSend);
   }
 
+
+  String getImagePath(){
+    String imagepath = "assets/gamewakelogo.gif";
+    getFileString();
+    // saveFile();
+    return imagepath;
+  }
+
   String getsplashtext(){
-    String splashtext = "Splash!";
+    String splashtext = "GAME WAKE!";
     getFileString();
     // saveFile();
     return splashtext;
@@ -66,15 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
     String filePath = '$appDocumentsPath/DateTimeFile.txt'; // 3
     return filePath;
   }
-
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 5),() {
-
       print("reloading");
       print(_strSend);
+      Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            AlarmsPage(title: 'Game Awake!', dtstr: _strSend)),
+            AlarmsPage(title: 'GAME WAKE!', dtstr: _strSend, lastalarm: "")),
       );
     });
 
@@ -84,7 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Text(getsplashtext()),
+        child:
+        Image.asset(getImagePath() as String),
+        // Text(getsplashtext()),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
