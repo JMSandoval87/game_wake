@@ -3,16 +3,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_app/main.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_app/set_alarm.dart';
-import 'package:flutter_app/settings.dart';
-import 'package:flutter_app/testalarm.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
 import 'game.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-
-
 
 class AlarmsPage extends StatefulWidget {
   AlarmsPage({Key? key, required this.title, required this.dtstr, required this.lastalarm}) : super(key: key);
@@ -22,8 +17,6 @@ class AlarmsPage extends StatefulWidget {
   @override
   _AlarmsPageState createState() => _AlarmsPageState();
 }
-
-
 
 class _AlarmsPageState extends State<AlarmsPage> {
   int loadcount = 0;

@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  String getImagePath(){
+  String getLogoImagePath(){
     String imagepath = "assets/gamewakelogo.gif";
     getFileString();
     // saveFile();
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child:
-        Image.asset(getImagePath() as String),
+        Image.asset(getLogoImagePath() as String),
         // Text(getsplashtext()),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

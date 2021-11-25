@@ -56,6 +56,10 @@ flutter:
 
   assets:
     - assets/gamewakelogo.gif
+    - assets/player.png
+    - assets/enemy.png
+    - assets/background.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

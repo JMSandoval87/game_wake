@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:sensors/sensors.dart';
-import 'package:flare_flutter/flare_actor.dart';
-
 import 'alarmspage.dart';
 
 
@@ -52,6 +50,21 @@ class runGState extends State<runG> with TickerProviderStateMixin {
     initialize();
   }
 
+  String getPlayerImagePath(){
+    String imagepath = "assets/player.png";
+    return imagepath;
+  }
+
+  String getEnemyImagePath(){
+    String imagepath = "assets/enemy.png";
+    return imagepath;
+  }
+
+  String getBGImagePath(){
+    String imagepath = "assets/background.png";
+    return imagepath;
+  }
+
   void initialize() {
     bulletYPoint = 1;
     targetYPoint = -1;
@@ -86,6 +99,7 @@ class runGState extends State<runG> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     if (bulletXPoint > targetXPoint - 0.15 && bulletXPoint < targetXPoint + 0.15) {
       if (bulletYPoint < targetYPoint) {
         setState(() {
@@ -114,7 +128,13 @@ class runGState extends State<runG> with TickerProviderStateMixin {
         Scaffold(
           backgroundColor: Colors.black,
           body: endGame != 1
-              ? Center(
+              ? Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: ExactAssetImage(getBGImagePath() as String),
+                    fit: BoxFit.cover
+                ),
+              ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -164,13 +184,21 @@ class runGState extends State<runG> with TickerProviderStateMixin {
               ],
             ),
           )
-              : Column(
-            children: <Widget>[
-              Expanded(
-                  child: Stack(children: <Widget>[
-                    Align(
-                      alignment: Alignment(0.8, -0.9),
-                      child: Text(
+              : Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ExactAssetImage(getBGImagePath() as String),
+                  fit: BoxFit.cover
+              ),
+            ),
+            child:
+            Column(
+              children: <Widget>[
+                Expanded(
+                    child: Stack(children: <Widget>[
+                      Align(
+                        alignment: Alignment(0.8, -0.9),
+                        child: Text(
                         "${count - 1}",
                         style: TextStyle(fontSize: 32, color: white),
                       ),
@@ -193,8 +221,10 @@ class runGState extends State<runG> with TickerProviderStateMixin {
                     Align(
                         alignment: Alignment(targetXPoint, targetYPoint),
                         child: Container(
-                          width: 40,
-                          child:Icon(Icons.brightness_high_outlined, color: deepo, size: 30.0,),
+                          width: 60,
+                          child:
+                          Image.asset(getEnemyImagePath() as String),
+                          // Icon(Icons.brightness_high_outlined, color: deepo, size: 30.0,),
                         ))
                   ])),
               StreamBuilder(
@@ -206,8 +236,10 @@ class runGState extends State<runG> with TickerProviderStateMixin {
                     alignment: Alignment(stream.data as double, 1),
                     child: Container(
                       width: 60,
-                      height: 30,
-                      child: Icon(Icons.navigation_rounded, color: blue, size: 30.0,),
+                      height: 60,
+                      child:
+                      Image.asset(getPlayerImagePath() as String),
+                      // Icon(Icons.navigation_rounded, color: blue, size: 30.0,),
                     ),
                     //box
                   );
@@ -215,6 +247,11 @@ class runGState extends State<runG> with TickerProviderStateMixin {
               )
             ],
           ),
+
+
+        ),
+
+
         ),
       ]),
     );
