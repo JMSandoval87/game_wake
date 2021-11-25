@@ -6,7 +6,6 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:sensors/sensors.dart';
 import 'alarmspage.dart';
 
-
 class runG extends StatefulWidget {
   final String lastalarm;
   final String title;
@@ -62,6 +61,11 @@ class runGState extends State<runG> with TickerProviderStateMixin {
 
   String getBGImagePath(){
     String imagepath = "assets/background.png";
+    return imagepath;
+  }
+
+  String getLaserImagePath(){
+    String imagepath = "assets/laser.png";
     return imagepath;
   }
 
@@ -139,16 +143,16 @@ class runGState extends State<runG> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(56.0),
                   child: Text(
                     "Game Wake!",
-                    style: TextStyle(color: white, fontSize: 62),
+                    style: TextStyle(color: white, fontSize: 48),
                   ),
                 ),
                 Text(
                   (count <= scoreToBeat && endGame == 2) ? "Score:${count - 1} \ntry again."
-                      : "Score:${count - 1}",
-                  style: TextStyle(color: white, fontSize: 62),
+                      : "Score:${count - 1}\n",
+                  style: TextStyle(color: white, fontSize: 48),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -214,7 +218,9 @@ class runGState extends State<runG> with TickerProviderStateMixin {
                             //  Icon(Icons.arrow_upward)
                             Container(
                               width: 15,
-                              child: Icon(Icons.arrow_drop_up_rounded, color: red,),
+                              child:
+                              Image.asset(getLaserImagePath() as String),
+                              // Icon(Icons.arrow_drop_up_rounded, color: red,),
                             ));
                       },
                     ),

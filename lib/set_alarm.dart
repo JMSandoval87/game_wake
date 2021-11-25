@@ -1,23 +1,14 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter_app/set_alarm.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
 import 'alarmspage.dart';
-
 
 class SetAlarmPage extends StatefulWidget {
   final int slot;
   final String title;
-
   SetAlarmPage({Key? key, required this.title, required this.slot}) : super(key: key);
-
-
-
   @override
   _SetAlarmPageState createState() => _SetAlarmPageState();
 }

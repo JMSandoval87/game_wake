@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_app/main.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_app/set_alarm.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';

@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/alarmspage.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'game.dart';
 
 main() async {
   runApp(MyApp());
